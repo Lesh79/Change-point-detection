@@ -3,10 +3,9 @@ import math
 
 
 class GraphCPD:
-    def __init__(self, data, threshold, thao):
+    def __init__(self, data, threshold):
         self.data = data
         self.threshold = threshold
-        self.thao = thao
         self.graph = self.AdjacencyMatrix()
 
     def AdjacencyMatrix(self):
@@ -20,7 +19,6 @@ class GraphCPD:
                         i != j):  # переписать на .iloc(Чекать по индексам)
                     adjacency_matrix.iloc[i, j] = 1
 
-        print(adjacency_matrix)
         return adjacency_matrix
 
     def AdjacencyList(self):
@@ -38,10 +36,10 @@ class GraphCPD:
 
         return adjacency_list
 
-    def check_edges_existence(self):
+    def check_edges_existence(self, thao):
         count_edges = 0
-        for nodeBefore in range(self.thao):
-            for nodeAfter in range(self.thao, len(self.data)):
+        for nodeBefore in range(thao):
+            for nodeAfter in range(thao, len(self.data)):
                 if not pd.isna(self.graph.iloc[nodeBefore, nodeAfter]):
                     count_edges += 1
         return count_edges
@@ -82,7 +80,6 @@ class GraphCPD:
                     node_degree += 1
             node_degree = node_degree ** 2
             sumOfSquares += node_degree
-        print(f"Сумма квадратов степеней узлов в графе  = {sumOfSquares} ")
         return sumOfSquares
 
     def sumOfSquaresOfDegreesOfNodes_List(self):
@@ -91,40 +88,39 @@ class GraphCPD:
             sumOfSquares += len(self.AdjacencyList()[node])**2
         return sumOfSquares
 
-    def calculation_E(self):
+    def calculation_E(self, thao):
         n = len(self.data)
-        p1 = ((2 * self.thao) * (n - self.thao)) / (n * (n - 1))
+        p1 = ((2 * thao) * (n - thao)) / (n * (n - 1))
         return p1 * self.calculateEdges()
 
-    def calculation_Var(self):
+    def calculation_Var(self, thao):
         n = len(self.data)
-        p1 = ((2 * self.thao) * (n - self.thao)) / (n * (n - 1))
-        p2 = (4 * self.thao * (self.thao - 1) * (n - self.thao) * (n - self.thao - 1)) / (
+        p1 = ((2 * thao) * (n - thao)) / (n * (n - 1))
+        p2 = (4 * thao * (thao - 1) * (n - thao) * (n - thao - 1)) / (
                 n * (n - 1) * (n - 2) * (n - 3))
         var = p2 * self.calculateEdges() + (0.5 * p1 - p2) * self.sumOfSquaresOfDegreesOfNodes() + (
                 p2 - p1 ** 2) * self.calculateEdges() ** 2
-        print(f" p1 = {p1} ")
-        print(f" p2 = {p2} ")
-        print(f" var = {var} ")
 
         return var
 
-    def calculation_z(self):
-        Zg = -((self.check_edges_existence() - self.calculation_E()) / math.sqrt(self.calculation_Var()))
-        print(f"Zg = {Zg}")
+    def calculation_z(self, thao):
+        Zg = -((self.check_edges_existence(thao) - self.calculation_E(thao)) / math.sqrt(self.calculation_Var(thao)))
         return Zg
 
     def find_changepoint(self, border):
         self.AdjacencyMatrix()
-        if self.calculation_z() > border:
-            return "Change point"
+        for t in range(1,len(self.data)):
+            if self.calculation_z(t) > border:
+                return t
 
 
 if __name__ == '__main__':
     data = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
     data_2 = [20, 22, 25, 24, 23, 26, 28, 32, 35, 36, 38, 37, 35,34, 33,  ]
     threshold = 5
-    analyzer = GraphCPD(data, threshold, 6)
+    analyzer = GraphCPD(data, threshold)
+    print(analyzer.graph)
+    print(analyzer.find_changepoint(1))
     # print(analyzer.calculation_z())
     # b = analyzer.calculation_z()
     # print(analyzer.find_changepoint(1.5))
