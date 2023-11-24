@@ -6,7 +6,7 @@ class test_GraphCPD(unittest.TestCase):
 
     def test_graph1(self):
         data_set1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-        graph1 = GraphCPD(data_set1,5)
+        graph1 = GraphCPD(data_set1, 5)
         Rg = graph1.check_edges_existence(3)
         self.assertEqual(Rg, 5, "Rg(t) is not true")
 

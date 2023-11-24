@@ -44,10 +44,10 @@ class GraphCPD:
                     count_edges += 1
         return count_edges
 
-    def check_edges_existence_list(self):
+    def check_edges_existence_list(self, thao):
         count_edges = 0
-        for node_1 in range(self.thao):
-            for node_2 in range(self.thao, len(self.data)):
+        for node_1 in range(thao):
+            for node_2 in range(thao, len(self.data)):
                 if self.data[node_2] in self.AdjacencyList()[self.data[node_1]]:
                     count_edges += 1
 
@@ -85,7 +85,7 @@ class GraphCPD:
     def sumOfSquaresOfDegreesOfNodes_List(self):
         sumOfSquares = 0
         for node in range(len(self.data)):
-            sumOfSquares += len(self.AdjacencyList()[node])**2
+            sumOfSquares += len(self.AdjacencyList()[node]) ** 2
         return sumOfSquares
 
     def calculation_E(self, thao):
@@ -109,20 +109,19 @@ class GraphCPD:
 
     def find_changepoint(self, border):
         self.AdjacencyMatrix()
-        for t in range(1,len(self.data)):
+        for t in range(1, len(self.data)):
             if self.calculation_z(t) > border:
                 return t
 
 
 if __name__ == '__main__':
     data = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-    data_2 = [20, 22, 25, 24, 23, 26, 28, 32, 35, 36, 38, 37, 35,34, 33,  ]
+    data_2 = [20, 22, 25, 24, 23, 26, 28, 32, 35, 36, 38, 37, 35, 34, 33, ]
     threshold = 5
     analyzer = GraphCPD(data, threshold)
-    print(analyzer.graph)
+    # print(analyzer.graph)
+    #
+    print(analyzer.calculation_z(3))
     print(analyzer.find_changepoint(1))
-    # print(analyzer.calculation_z())
-    # b = analyzer.calculation_z()
-    # print(analyzer.find_changepoint(1.5))
-    # b = analyzer.find_changepoint(0)
+    # print(analyzer.check_edges_existence(3))
     # print(analyzer.check_edges_existence_list())
