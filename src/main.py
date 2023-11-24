@@ -15,9 +15,7 @@ class GraphCPD:
 
         for i in range(count_nodes):
             for j in range(count_nodes):
-                if (abs(self.data[i] - self.data[j]) <= self.threshold) and (
-                    i != j
-                ):  # переписать на .iloc(Чекать по индексам)
+                if (abs(self.data[i] - self.data[j]) <= self.threshold) and (i != j):
                     adjacency_matrix.iloc[i, j] = 1
 
         return adjacency_matrix
@@ -109,11 +107,11 @@ class GraphCPD:
         return var
 
     def calculation_z(self, thao):
-        Zg = -(
+        zg = -(
             (self.check_edges_existence(thao) - self.calculation_E(thao))
             / math.sqrt(self.calculation_Var(thao))
         )
-        return Zg
+        return zg
 
     def find_changepoint(self, border):
         self.AdjacencyMatrix()
@@ -123,7 +121,7 @@ class GraphCPD:
 
 
 if __name__ == "__main__":
-    data = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
+    data_1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
     data_2 = [
         20,
         22,
@@ -141,8 +139,8 @@ if __name__ == "__main__":
         34,
         33,
     ]
-    threshold = 5
-    analyzer = GraphCPD(data, threshold)
+    some_threshold = 5
+    analyzer = GraphCPD(data_1, some_threshold)
     # print(analyzer.graph)
     #
     print(analyzer.calculation_z(3))
