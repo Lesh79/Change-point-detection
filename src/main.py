@@ -1,5 +1,6 @@
-import pandas as pd
 import math
+
+import pandas as pd
 
 
 class GraphCPD:
@@ -10,7 +11,7 @@ class GraphCPD:
 
     def AdjacencyMatrix(self):
         count_nodes = len(self.data)
-        # node_info = {node: {'t': index} for index, node in enumerate(self.data)}
+
         adjacency_matrix = pd.DataFrame(index=self.data, columns=self.data)
 
         for i in range(count_nodes):
@@ -95,9 +96,7 @@ class GraphCPD:
     def calculation_Var(self, thao):
         n = len(self.data)
         p1 = ((2 * thao) * (n - thao)) / (n * (n - 1))
-        p2 = (4 * thao * (thao - 1) * (n - thao) * (n - thao - 1)) / (
-            n * (n - 1) * (n - 2) * (n - 3)
-        )
+        p2 = (4 * thao * (thao - 1) * (n - thao) * (n - thao - 1)) / (n * (n - 1) * (n - 2) * (n - 3))
         var = (
             p2 * self.calculateEdges()
             + (0.5 * p1 - p2) * self.sumOfSquaresOfDegreesOfNodes()
@@ -107,10 +106,7 @@ class GraphCPD:
         return var
 
     def calculation_z(self, thao):
-        zg = -(
-            (self.check_edges_existence(thao) - self.calculation_E(thao))
-            / math.sqrt(self.calculation_Var(thao))
-        )
+        zg = -((self.check_edges_existence(thao) - self.calculation_E(thao)) / math.sqrt(self.calculation_Var(thao)))
         return zg
 
     def find_changepoint(self, border):

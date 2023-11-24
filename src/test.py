@@ -1,4 +1,4 @@
-from main import *
+from main import GraphCPD
 import unittest
 
 
@@ -13,9 +13,7 @@ class TestGraphCPD(unittest.TestCase):
         self.assertEqual(num_edges, 16, "|G| in not true")
 
         sum_squares_degree = graph1.sumOfSquaresOfDegreesOfNodes()
-        self.assertEqual(
-            sum_squares_degree, 96, "Sum of squares of degree  is not true"
-        )
+        self.assertEqual(sum_squares_degree, 96, "Sum of squares of degree  is not true")
 
         e = graph1.calculation_E(3)
         self.assertEqual(e, 6.153846153846154, "E(Rg(t)) is not true")
