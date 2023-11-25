@@ -2,10 +2,16 @@
 
 
 # How to use
-To create a graph, you need to pass some `data` and `threshold`
+To create a graph, you need to pass some `data` and `user_function`
 ```python
-analyzer = GraphCPD(data, threshold)
+analyzer = GraphCPD(data, user_function)
 ```
+`user_function` This is your function that you pass in to compare your data
+```python
+    def custom_comparison(node1, node2):
+        return abs(node1 - node2) <= 5
+```
+
 To find change point, you need to call the function `.find_changepoint(border)` and pass `border`
 ```python
 change_point = analyzer.find_changepoint(border)

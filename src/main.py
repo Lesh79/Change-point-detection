@@ -4,9 +4,9 @@ import pandas as pd
 
 
 class GraphCPD:
-    def __init__(self, data, threshold):
+    def __init__(self, data, user_function):
         self.data = data
-        self.threshold = threshold
+        self.user_function = user_function
         self.graph = self.AdjacencyMatrix()
 
     def AdjacencyMatrix(self):
@@ -16,7 +16,7 @@ class GraphCPD:
 
         for i in range(count_nodes):
             for j in range(count_nodes):
-                if (abs(self.data[i] - self.data[j]) <= self.threshold) and (i != j):
+                if self.user_function(self.data[i], self.data[j]) and (i != j):
                     adjacency_matrix.iloc[i, j] = 1
 
         return adjacency_matrix
@@ -27,7 +27,7 @@ class GraphCPD:
 
         for i in range(count_nodes):
             for j in range(count_nodes):
-                if (abs(self.data[i] - self.data[j]) <= self.threshold) and (i != j):
+                if self.user_function(self.data[i], self.data[j]) and (i != j):
                     if self.data[j] not in adjacency_list[i]:
                         adjacency_list[i].append(j)
 
@@ -117,6 +117,10 @@ class GraphCPD:
 
 
 if __name__ == "__main__":
+
+    def custom_comparison(node1, node2):
+        return abs(node1 - node2) <= 5
+
     data_1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
     data_2 = [
         20,
@@ -135,11 +139,4 @@ if __name__ == "__main__":
         34,
         33,
     ]
-    some_threshold = 5
-    analyzer = GraphCPD(data_1, some_threshold)
-    # print(analyzer.graph)
-    #
-    print(analyzer.calculation_z(3))
-    print(analyzer.find_changepoint(1))
-    # print(analyzer.check_edges_existence(3))
-    # print(analyzer.check_edges_existence_list())
+    analyzer = GraphCPD(data_1, custom_comparison)
