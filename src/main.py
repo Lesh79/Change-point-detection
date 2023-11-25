@@ -3,17 +3,15 @@ import math
 import pandas as pd
 
 
-class GraphCPD:
+class GraphBuilder:
     def __init__(self, data, user_function):
         self.data = data
         self.user_function = user_function
-        self.graph = self.AdjacencyMatrix()
+        self.graph_build = self.AdjacencyMatrix()
 
     def AdjacencyMatrix(self):
         count_nodes = len(self.data)
-
         adjacency_matrix = pd.DataFrame(index=self.data, columns=self.data)
-
         for i in range(count_nodes):
             for j in range(count_nodes):
                 if self.user_function(self.data[i], self.data[j]) and (i != j):
@@ -31,16 +29,40 @@ class GraphCPD:
                     if self.data[j] not in adjacency_list[i]:
                         adjacency_list[i].append(j)
 
-        # for node, neighbors in adjacency_list.items():
-        #     print(f"{self.data[node]}: {[self.data[index] for index in neighbors]}")
+        for node, neighbors in adjacency_list.items():
+            print(f"{self.data[node]}: {[self.data[index] for index in neighbors]}")
 
         return adjacency_list
+
+
+class Graph:
+    def __init__(self, data, user_function):
+        self.data = data
+        self.graph_builder = GraphBuilder(self.data, user_function)
+
+    def calculateEdges(self):
+        count = 0
+        for node_1 in range(len(self.data)):
+            for node_2 in range(len(self.data)):
+                if not pd.isna(self.graph_builder.graph_build.iloc[node_1, node_2]):
+                    count += 1
+        return count / 2
+
+    def calculateEdges_list(self):
+        unique_edges = set()
+
+        for node, neighbors in self.graph_builder.graph_build.items():
+            for neighbor_index in neighbors:
+                edge = tuple(sorted((node, neighbor_index)))
+                unique_edges.add(edge)
+
+        return len(unique_edges)
 
     def check_edges_existence(self, thao):
         count_edges = 0
         for nodeBefore in range(thao):
             for nodeAfter in range(thao, len(self.data)):
-                if not pd.isna(self.graph.iloc[nodeBefore, nodeAfter]):
+                if not pd.isna(self.graph_builder.graph_build.iloc[nodeBefore, nodeAfter]):
                     count_edges += 1
         return count_edges
 
@@ -48,35 +70,17 @@ class GraphCPD:
         count_edges = 0
         for node_1 in range(thao):
             for node_2 in range(thao, len(self.data)):
-                if self.data[node_2] in self.AdjacencyList()[self.data[node_1]]:
+                if self.data[node_2] in self.graph_builder.graph_build[self.data[node_1]]:
                     count_edges += 1
 
         return count_edges
-
-    def calculateEdges(self):
-        count = 0
-        for node_1 in range(len(self.data)):
-            for node_2 in range(len(self.data)):
-                if not pd.isna(self.graph.iloc[node_1, node_2]):
-                    count += 1
-        return count / 2
-
-    def calculateEdges2(self):
-        unique_edges = set()
-
-        for node, neighbors in self.AdjacencyList().items():
-            for neighbor_index in neighbors:
-                edge = tuple(sorted((node, neighbor_index)))
-                unique_edges.add(edge)
-
-        return len(unique_edges)
 
     def sumOfSquaresOfDegreesOfNodes(self):
         sum_squares = 0
         for node_1 in range(len(self.data)):
             node_degree = 0
             for node_2 in range(len(self.data)):
-                if not pd.isna((self.graph.iloc[node_1, node_2])):
+                if not pd.isna((self.graph_builder.graph_build.iloc[node_1, node_2])):
                     node_degree += 1
             node_degree = node_degree**2
             sum_squares += node_degree
@@ -85,33 +89,39 @@ class GraphCPD:
     def sumOfSquaresOfDegreesOfNodes_List(self):
         sum_squares = 0
         for node in range(len(self.data)):
-            sum_squares += len(self.AdjacencyList()[node]) ** 2
+            sum_squares += len(self.graph_builder.graph_build[node]) ** 2
         return sum_squares
 
+
+class CPD:
+    def __init__(self, graph):
+        self.graph = graph
+
     def calculation_E(self, thao):
-        n = len(self.data)
+        n = len(self.graph.data)
         p1 = ((2 * thao) * (n - thao)) / (n * (n - 1))
-        return p1 * self.calculateEdges()
+        return p1 * self.graph.calculateEdges()
 
     def calculation_Var(self, thao):
-        n = len(self.data)
+        n = len(self.graph.data)
         p1 = ((2 * thao) * (n - thao)) / (n * (n - 1))
         p2 = (4 * thao * (thao - 1) * (n - thao) * (n - thao - 1)) / (n * (n - 1) * (n - 2) * (n - 3))
         var = (
-            p2 * self.calculateEdges()
-            + (0.5 * p1 - p2) * self.sumOfSquaresOfDegreesOfNodes()
-            + (p2 - p1**2) * self.calculateEdges() ** 2
+            p2 * self.graph.calculateEdges()
+            + (0.5 * p1 - p2) * self.graph.sumOfSquaresOfDegreesOfNodes()
+            + (p2 - p1**2) * self.graph.calculateEdges() ** 2
         )
 
         return var
 
     def calculation_z(self, thao):
-        zg = -((self.check_edges_existence(thao) - self.calculation_E(thao)) / math.sqrt(self.calculation_Var(thao)))
+        zg = -(
+            (self.graph.check_edges_existence(thao) - self.calculation_E(thao)) / math.sqrt(self.calculation_Var(thao))
+        )
         return zg
 
     def find_changepoint(self, border):
-        self.AdjacencyMatrix()
-        for t in range(1, len(self.data)):
+        for t in range(1, len(self.graph.data)):
             if self.calculation_z(t) > border:
                 return t
 
@@ -142,4 +152,6 @@ if __name__ == "__main__":
         34,
         33,
     ]
-    analyzer = GraphCPD(data_1, custom_comparison)
+    graph = Graph(data_1, custom_comparison)
+    cpd = CPD(graph)
+    change_point = cpd.find_changepoint(1)

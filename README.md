@@ -4,8 +4,9 @@
 # How to use
 To create a graph, you need to pass some `data` and `user_function`
 ```python
-analyzer = GraphCPD(data, user_function)
+graph = GraphCPD(data, user_function)
 ```
+
 `user_function` This is your function that you pass in to compare your data
 ```python
 def custom_comparison(node1, node2):
@@ -13,11 +14,6 @@ def custom_comparison(node1, node2):
         return True
     else:
         return False
-```
-
-To find change point, you need to call the function `.find_changepoint(border)` and pass `border`
-```python
-change_point = analyzer.find_changepoint(border)
 ```
 You can calculate quantity of edges in graph
 ```python
@@ -27,7 +23,11 @@ You can check how many nodes from first part are connected with nodes from secon
 ```python
 .check_edges_existence(time)
 ```
-# Pre-commit
+To find change point, you need to call the function `.find_changepoint(border)` and pass `border`
+```python
+change_point = CPD(graph).find_changepoint(border)
+```
+## Pre-commit
 ```bash
 pip install pre-commit
 ```
@@ -35,4 +35,4 @@ pip install pre-commit
 pre-commit install
 ```
 # License
-Distributed under the MIT License. See [LICENSE](https://github.com/Lesh79/Change-point-detection/blob/main/LICENSE) for more information.
+Distributed under the **MIT** License. See [LICENSE](https://github.com/Lesh79/Change-point-detection/blob/main/LICENSE) for more information.
