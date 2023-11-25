@@ -119,7 +119,10 @@ class GraphCPD:
 if __name__ == "__main__":
 
     def custom_comparison(node1, node2):
-        return abs(node1 - node2) <= 5
+        if abs(node1 - node2) <= 5:
+            return True
+        else:
+            return False
 
     data_1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
     data_2 = [

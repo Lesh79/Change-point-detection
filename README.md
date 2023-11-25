@@ -8,8 +8,11 @@ analyzer = GraphCPD(data, user_function)
 ```
 `user_function` This is your function that you pass in to compare your data
 ```python
-    def custom_comparison(node1, node2):
-        return abs(node1 - node2) <= 5
+def custom_comparison(node1, node2):
+    if abs(node1 - node2) <= 5:
+        return True
+    else:
+        return False
 ```
 
 To find change point, you need to call the function `.find_changepoint(border)` and pass `border`
