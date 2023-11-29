@@ -1,6 +1,6 @@
 import math
 
-import pandas as pd
+import numpy as np
 
 
 class GraphBuilder:
@@ -11,11 +11,12 @@ class GraphBuilder:
 
     def AdjacencyMatrix(self):
         count_nodes = len(self.data)
-        adjacency_matrix = pd.DataFrame(index=self.data, columns=self.data)
+        adjacency_matrix = np.zeros((count_nodes, count_nodes), dtype=int)
+
         for i in range(count_nodes):
             for j in range(count_nodes):
                 if self.user_function(self.data[i], self.data[j]) and (i != j):
-                    adjacency_matrix.iloc[i, j] = 1
+                    adjacency_matrix[i, j] = 1
 
         return adjacency_matrix
 
@@ -44,7 +45,7 @@ class Graph:
         count = 0
         for node_1 in range(len(self.data)):
             for node_2 in range(len(self.data)):
-                if not pd.isna(self.graph_builder.graph_build.iloc[node_1, node_2]):
+                if self.graph_builder.graph_build[node_1, node_2] != 0 and (node_1 != node_2):
                     count += 1
         return count / 2
 
@@ -62,7 +63,7 @@ class Graph:
         count_edges = 0
         for nodeBefore in range(thao):
             for nodeAfter in range(thao, len(self.data)):
-                if not pd.isna(self.graph_builder.graph_build.iloc[nodeBefore, nodeAfter]):
+                if self.graph_builder.graph_build[nodeBefore, nodeAfter] == 1:
                     count_edges += 1
         return count_edges
 
@@ -80,7 +81,7 @@ class Graph:
         for node_1 in range(len(self.data)):
             node_degree = 0
             for node_2 in range(len(self.data)):
-                if not pd.isna((self.graph_builder.graph_build.iloc[node_1, node_2])):
+                if self.graph_builder.graph_build[node_1, node_2] == 1:
                     node_degree += 1
             node_degree = node_degree**2
             sum_squares += node_degree
@@ -135,23 +136,6 @@ if __name__ == "__main__":
             return False
 
     data_1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-    data_2 = [
-        20,
-        22,
-        25,
-        24,
-        23,
-        26,
-        28,
-        32,
-        35,
-        36,
-        38,
-        37,
-        35,
-        34,
-        33,
-    ]
     graph = Graph(data_1, custom_comparison)
     cpd = CPD(graph)
     change_point = cpd.find_changepoint(1)

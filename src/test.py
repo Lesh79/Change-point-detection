@@ -1,4 +1,4 @@
-from main import GraphBuilder, Graph, CPD
+from main import Graph, CPD
 import unittest
 
 
