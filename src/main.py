@@ -30,8 +30,8 @@ class GraphBuilder:
                     if self.data[j] not in adjacency_list[i]:
                         adjacency_list[i].append(j)
 
-        for node, neighbors in adjacency_list.items():
-            print(f"{self.data[node]}: {[self.data[index] for index in neighbors]}")
+        # for node, neighbors in adjacency_list.items():
+        #     print(f"{self.data[node]}: {[self.data[index] for index in neighbors]}")
 
         return adjacency_list
 
@@ -108,7 +108,7 @@ class CPD:
         p1 = ((2 * thao) * (n - thao)) / (n * (n - 1))
         p2 = (4 * thao * (thao - 1) * (n - thao) * (n - thao - 1)) / (n * (n - 1) * (n - 2) * (n - 3))
         var = (
-            p1 * self.graph.calculateEdges()
+            p2 * self.graph.calculateEdges()
             + (0.5 * p1 - p2) * self.graph.sumOfSquaresOfDegreesOfNodes()
             + (p2 - p1**2) * self.graph.calculateEdges() ** 2
         )
@@ -133,15 +133,7 @@ class CPD:
 if __name__ == "__main__":
 
     def custom_comparison(node1, node2):
-        if abs(node1 - node2) <= 1:
+        if abs(node1 - node2) <= 5:
             return True
         else:
             return False
-
-    normal_data = np.random.normal(loc=0, scale=1, size=50)
-    normal_z = []
-    normal_graph = Graph(normal_data, custom_comparison)
-    normal_CPD = CPD(normal_graph)
-    for i in range(1, len(normal_data)):
-        normal_z.append(normal_CPD.calculation_z(i))
-    print(normal_z)
