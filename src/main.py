@@ -108,7 +108,7 @@ class CPD:
         p1 = ((2 * thao) * (n - thao)) / (n * (n - 1))
         p2 = (4 * thao * (thao - 1) * (n - thao) * (n - thao - 1)) / (n * (n - 1) * (n - 2) * (n - 3))
         var = (
-            p2 * self.graph.calculateEdges()
+            p1 * self.graph.calculateEdges()
             + (0.5 * p1 - p2) * self.graph.sumOfSquaresOfDegreesOfNodes()
             + (p2 - p1**2) * self.graph.calculateEdges() ** 2
         )
@@ -121,21 +121,27 @@ class CPD:
         )
         return zg
 
-    def find_changepoint(self, border):
+    def find_changepoint(self, border, zlist):
+        change_point_list = []
         for t in range(1, len(self.graph.data)):
+            zlist.append(self.calculation_z(t))  # Needed for drawing Zg(t) graphics
             if self.calculation_z(t) > border:
-                return t
+                change_point_list.append(t)
+        return change_point_list
 
 
 if __name__ == "__main__":
 
     def custom_comparison(node1, node2):
-        if abs(node1 - node2) <= 5:
+        if abs(node1 - node2) <= 1:
             return True
         else:
             return False
 
-    data_1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-    graph = Graph(data_1, custom_comparison)
-    cpd = CPD(graph)
-    change_point = cpd.find_changepoint(1)
+    normal_data = np.random.normal(loc=0, scale=1, size=50)
+    normal_z = []
+    normal_graph = Graph(normal_data, custom_comparison)
+    normal_CPD = CPD(normal_graph)
+    for i in range(1, len(normal_data)):
+        normal_z.append(normal_CPD.calculation_z(i))
+    print(normal_z)
