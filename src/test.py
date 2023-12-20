@@ -32,5 +32,5 @@ class TestGraphCPD(unittest.TestCase):
 
         z = changepoint.calculation_z(3)
         self.assertEqual(z, 0.6963575181639445, "Zg(t) is not true")
-
-        self.assertEqual(changepoint.find_changepoint(1), 5, "Incorrect change point")
+        z_list = []
+        self.assertEqual(changepoint.find_changepoint(2, z_list), [5], "Incorrect change point")
