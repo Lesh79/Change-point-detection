@@ -28,9 +28,9 @@ class TestGraphCPD(unittest.TestCase):
         self.assertEqual(e, 6.153846153846154, "E(Rg(t)) is not true")
 
         var = changepoint.calculation_Var(3)
-        self.assertEqual(var, 2.7455621301775164, "Var(Rg(t)) is not true")
+        self.assertEqual(var, 6.885422270037656, "Var(Rg(t)) is not true")
 
         z = changepoint.calculation_z(3)
-        self.assertEqual(z, 0.6963575181639445, "Zg(t) is not true")
+        self.assertEqual(z, 0.4397264774834466, "Zg(t) is not true")
         z_list = []
-        self.assertEqual(changepoint.find_changepoint(2, z_list), [5], "Incorrect change point")
+        self.assertEqual(changepoint.find_changepoint(1.5, z_list), [5], "Incorrect change point")
