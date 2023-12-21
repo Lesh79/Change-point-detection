@@ -3,6 +3,7 @@ import math
 import numpy as np
 
 
+# TODO: Поменять названия переменных
 class GraphBuilder:
     def __init__(self, data, user_function):
         self.data = data
@@ -108,7 +109,7 @@ class CPD:
         p1 = ((2 * thao) * (n - thao)) / (n * (n - 1))
         p2 = (4 * thao * (thao - 1) * (n - thao) * (n - thao - 1)) / (n * (n - 1) * (n - 2) * (n - 3))
         var = (
-            p2 * self.graph.calculateEdges()
+            p1 * self.graph.calculateEdges()
             + (0.5 * p1 - p2) * self.graph.sumOfSquaresOfDegreesOfNodes()
             + (p2 - p1**2) * self.graph.calculateEdges() ** 2
         )
