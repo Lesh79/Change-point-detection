@@ -53,8 +53,5 @@ if __name__ == "__main__":
     data1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100]
     graph1 = GraphList(data1, custom_comparison)
     print(graph1.num_of_edges)
-    # print(graph.calculate_edges_list())
-    # print(graph.check_edges_existence_list(2))
-    # print(graph.sum_of_squares_of_degrees_of_nodes_list())
     normal_cpd = GraphBased(graph1)
     print(normal_cpd.find_changepoint(1, z))
