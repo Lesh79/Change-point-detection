@@ -1,7 +1,10 @@
-from src.graph_based_cpd import CPD
-from src.net_characteristics import Graph
+from src.graph_based_cpd import CPDgraph
+from src.graph import Graph
 
 import unittest
+
+
+# pytest .\tests\test.py
 
 
 def custom_comparison(node1, node2):
@@ -26,7 +29,7 @@ class TestGraphCPD(unittest.TestCase):
 
     def test_CPD(self):
         data_set1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-        changepoint = CPD(Graph(data_set1, custom_comparison, "Matrix"))
+        changepoint = CPDgraph(Graph(data_set1, custom_comparison, "Matrix"))
         e = changepoint.calculation_e(3)
         self.assertEqual(e, 6.153846153846154, "E(Rg(t)) is not true")
 

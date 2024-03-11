@@ -1,10 +1,12 @@
 from typing import List
 import math
-from src.net_characteristics import Graph
+from src.graph import GraphMatrix, GraphList
+from interface.CPD import CPD
 
 
-class CPD:
-    def __init__(self, graph: Graph):
+class GraphBased(CPD):
+    def __init__(self, graph):
+        super().__init__(graph)
         self.graph = graph
 
     def calculation_e(self, thao: int) -> float:
@@ -49,10 +51,10 @@ if __name__ == "__main__":
 
     z = []
     data1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100]
-    graph1 = Graph(data1, custom_comparison, "Matrix")
+    graph1 = GraphList(data1, custom_comparison)
     print(graph1.num_of_edges)
     # print(graph.calculate_edges_list())
     # print(graph.check_edges_existence_list(2))
     # print(graph.sum_of_squares_of_degrees_of_nodes_list())
-    normal_cpd = CPD(graph1)
+    normal_cpd = GraphBased(graph1)
     print(normal_cpd.find_changepoint(1, z))

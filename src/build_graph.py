@@ -1,15 +1,17 @@
 from typing import List, Any, Dict
 import numpy as np
+from interface.builder_graph import BuilderGraph
 
 
-class AdjacencyMatrixBuilder:
+class AdjacencyMatrixBuilder(BuilderGraph):
     def __init__(self, data: List[Any], comparing_function):
+        super().__init__(data, comparing_function)
         self.data = data
         self.comparing_function = comparing_function
         self.num_of_edges: int = 0
-        self.adjacency_matrix = self.build_adjacency_matrix()
+        self.graph = self.build_graph()
 
-    def build_adjacency_matrix(self) -> np.ndarray:
+    def build_graph(self) -> np.ndarray:  # Adjacency Matrix
         count_edges = 0
         count_nodes = len(self.data)
         adjacency_matrix = np.zeros((count_nodes, count_nodes), dtype=int)
@@ -29,9 +31,9 @@ class AdjacencyListBuilder:
         self.data = data
         self.comparing_function = comparing_function
         self.num_of_edges: int = 0
-        self.adjacency_list = self.build_adjacency_list()
+        self.graph = self.build_graph()
 
-    def build_adjacency_list(self) -> Dict[int, List[int]]:
+    def build_graph(self) -> Dict[int, List[int]]:  # Adjacency List
         unique_edges = set()
         count_nodes = len(self.data)
         adjacency_list = {index: [] for index in range(count_nodes)}
