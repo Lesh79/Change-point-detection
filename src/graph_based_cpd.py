@@ -52,6 +52,7 @@ if __name__ == "__main__":
     z = []
     data1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100]
     graph1 = GraphList(data1, custom_comparison)
+    graph2 = GraphMatrix(data1, custom_comparison)
     print(graph1.num_of_edges)
     normal_cpd = GraphBased(graph1)
     print(normal_cpd.find_changepoint(1, z))
