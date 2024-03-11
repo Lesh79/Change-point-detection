@@ -1,7 +1,7 @@
 from typing import List
 import math
 from src.graph import GraphMatrix, GraphList
-from interface.CPD import CPD
+from src.interface.CPD import CPD
 
 
 class GraphBased(CPD):

@@ -1,6 +1,6 @@
 from typing import List, Any
 from src.build_graph import AdjacencyMatrixBuilder, AdjacencyListBuilder
-from interface.graph import Graph
+from src.interface.graph import Graph
 
 
 class GraphMatrix(Graph):

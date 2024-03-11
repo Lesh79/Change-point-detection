@@ -1,5 +1,5 @@
-from src.graph_based_cpd import CPDgraph
-from src.graph import Graph
+from src.graph_based_cpd import GraphBased
+from src.graph import GraphMatrix, GraphList
 
 import unittest
 
@@ -17,7 +17,7 @@ def custom_comparison(node1, node2):
 class TestGraphCPD(unittest.TestCase):
     def test_graph1(self):
         data_set1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-        graph = Graph(data_set1, custom_comparison, "Matrix")
+        graph = GraphMatrix(data_set1, custom_comparison)
         rg = graph.check_edges_existence(3)
         self.assertEqual(rg, 5, "Rg(t) is not true")
 
@@ -29,7 +29,7 @@ class TestGraphCPD(unittest.TestCase):
 
     def test_CPD(self):
         data_set1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-        changepoint = CPDgraph(Graph(data_set1, custom_comparison, "Matrix"))
+        changepoint = GraphBased(GraphList(data_set1, custom_comparison))
         e = changepoint.calculation_e(3)
         self.assertEqual(e, 6.153846153846154, "E(Rg(t)) is not true")
 

@@ -1,6 +1,6 @@
 from typing import List, Any, Dict
 import numpy as np
-from interface.builder_graph import BuilderGraph
+from src.interface.builder_graph import BuilderGraph
 
 
 class AdjacencyMatrixBuilder(BuilderGraph):
