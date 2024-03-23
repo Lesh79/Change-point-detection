@@ -40,7 +40,7 @@ class AdjacencyListBuilder(IBuilderGraph):
         self.comparing_function = comparing_function
         self.num_of_edges: int = 0
 
-    def build_graph(self):  # Adjacency List
+    def build_list(self) -> dict[int, list]:  # Adjacency List
         unique_edges = set()
         count_nodes = len(self.data)
         adjacency_list = {index: [] for index in range(count_nodes)}
@@ -54,7 +54,11 @@ class AdjacencyListBuilder(IBuilderGraph):
                         unique_edges.add(edge)
         self.num_of_edges = len(unique_edges)
 
-        for node, neighbors in adjacency_list.items():
-            print(f"{self.data[node]}: {[self.data[index] for index in neighbors]}")
+        # for node, neighbors in adjacency_list.items():
+        #     print(f"{self.data[node]}: {[self.data[index] for index in neighbors]}")
 
-        return GraphList(adjacency_list, len(self.data))
+        return adjacency_list
+
+    def build_graph(self) -> IGraph:
+        lst = self.build_list()
+        return GraphList(lst, len(self.data))
