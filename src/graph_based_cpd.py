@@ -1,5 +1,7 @@
-from typing import List
 import math
+from typing import List
+
+from src.build_graph import AdjacencyListBuilder, AdjacencyMatrixBuilder
 from src.graph import GraphMatrix, GraphList
 from src.interface.CPD import CPD
 
@@ -44,15 +46,20 @@ class GraphBased(CPD):
 if __name__ == "__main__":
 
     def custom_comparison(node1, node2):
-        if abs(node1 - node2) <= 10:
+        if abs(node1 - node2) <= 5:
             return True
         else:
             return False
 
     z = []
     data1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100]
-    graph1 = GraphList(data1, custom_comparison)
-    graph2 = GraphMatrix(data1, custom_comparison)
-    print(graph1.num_of_edges)
-    normal_cpd = GraphBased(graph1)
-    print(normal_cpd.find_changepoint(1, z))
+    builder = AdjacencyMatrixBuilder(data1, custom_comparison)
+    mt = builder.build_matrix()
+    graph = builder.build_graph()
+    print(mt)
+    print(graph.check_edges_existence(3))
+    print(graph[3][0])
+    # a = builder.build_graph()
+    # print(a[3][0])
+    # gr = GraphMatrix(build)  # or GraphList(build)
+    # print(gr.check_edges_existence(3))
