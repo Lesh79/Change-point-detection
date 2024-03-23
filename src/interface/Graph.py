@@ -4,6 +4,9 @@ import numpy as np
 
 
 class IGraph(ABC):
+    def __init__(self):
+        self.num_of_edges = None
+
     @abstractmethod
     def check_edges_existence(self, thao: int) -> int:
         """Calculate R for Adjacency Matrix or List"""

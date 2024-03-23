@@ -54,14 +54,9 @@ if __name__ == "__main__":
     z = []
     data1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
     builder = AdjacencyMatrixBuilder(data1, custom_comparison)
-    mt = builder.build_matrix()
     graph = builder.build_graph()
-    print(graph.check_edges_existence(3))
-    # print(graph[3][0])
+    print(graph.num_of_edges)
     lstbuild = AdjacencyListBuilder(data1, custom_comparison)
     lst = lstbuild.build_graph()
-    print(lst.check_edges_existence(3))
-    # a = builder.build_graph()
-    # print(a[3][0])
-    # gr = GraphMatrix(build)  # or GraphList(build)
-    # print(gr.check_edges_existence(3))
+
+    print(lst.num_of_edges)

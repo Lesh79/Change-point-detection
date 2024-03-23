@@ -30,7 +30,7 @@ class AdjacencyMatrixBuilder(IBuilderGraph):
 
     def build_graph(self) -> IGraph:
         mtx = self.build_matrix()
-        return GraphMatrix(mtx, len(self.data))
+        return GraphMatrix(mtx, len(self.data), self.num_of_edges)
 
 
 class AdjacencyListBuilder(IBuilderGraph):
@@ -48,17 +48,16 @@ class AdjacencyListBuilder(IBuilderGraph):
         for i in range(count_nodes):
             for j in range(count_nodes):
                 if self.comparing_function(self.data[i], self.data[j]) and (i != j):
-                    if self.data[j] not in adjacency_list[i]:
-                        adjacency_list[i].append(j)
-                        edge = tuple(sorted((i, j)))
-                        unique_edges.add(edge)
+                    adjacency_list[i].append(self.data[j])
+                    edge = tuple(sorted((i, j)))
+                    unique_edges.add(edge)
         self.num_of_edges = len(unique_edges)
 
-        # for node, neighbors in adjacency_list.items():
-        #     print(f"{self.data[node]}: {[self.data[index] for index in neighbors]}")
+        for i in range(0, len(self.data)):
+            print(f"{self.data[i]}: {adjacency_list[i]}")
 
         return adjacency_list
 
     def build_graph(self) -> IGraph:
         lst = self.build_list()
-        return GraphList(lst, len(self.data))
+        return GraphList(lst, self.data, self.num_of_edges)
