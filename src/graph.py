@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List
 
 from numpy import ndarray, dtype
 
@@ -6,9 +6,10 @@ from src.interface.Graph import IGraph
 
 
 class GraphMatrix(IGraph):
-    def __init__(self, mtx: ndarray[Any, dtype], size: int, num_of_edges: int):
+    def __init__(self, mtx: ndarray[Any, dtype], data: List[Any], num_of_edges: int):
+        super().__init__()
         self.mtx = mtx
-        self.len = size
+        self.len = len(data)
         self.num_of_edges: int = num_of_edges
 
     def __getitem__(self, item):
@@ -35,9 +36,11 @@ class GraphMatrix(IGraph):
 
 
 class GraphList(IGraph):
-    def __init__(self, lst, data, num_of_edges: int):
+    def __init__(self, lst, data: List[Any], num_of_edges: int):
+        super().__init__()
         self.lst = lst
         self.data = data
+        self.len = len(data)
         self.num_of_edges: int = num_of_edges
 
     def __getitem__(self, item):
@@ -46,13 +49,13 @@ class GraphList(IGraph):
     def check_edges_existence(self, thao) -> int:
         count_edges = 0
         for node_1 in range(thao):
-            for node_2 in range(0, len(self.data)):
+            for node_2 in range(0, self.len):
                 if self.data[node_2] in self.lst[node_1]:
                     count_edges += 1
         return count_edges // 2
 
     def sum_of_squares_of_degrees_of_nodes(self) -> int:
         sum_squares = 0
-        for node in range(0, len(self.data)):
+        for node in range(0, self.len):
             sum_squares += len(self.lst[node]) ** 2
         return sum_squares
