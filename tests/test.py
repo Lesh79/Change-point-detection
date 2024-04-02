@@ -1,5 +1,5 @@
+from src.build_graph import AdjacencyMatrixBuilder, AdjacencyListBuilder
 from src.graph_based_cpd import GraphBased
-from src.graph import GraphMatrix, GraphList
 
 import unittest
 
@@ -15,28 +15,66 @@ def custom_comparison(node1, node2):
 
 
 class TestGraphCPD(unittest.TestCase):
-    def test_graph1(self):
+    def test_graph_matrix(self):
         data_set1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-        graph = GraphMatrix(data_set1, custom_comparison)
-        rg = graph.check_edges_existence(3)
+        builder = AdjacencyMatrixBuilder(data_set1, custom_comparison)
+        mtxgraph = builder.build_graph()
+
+        rg = mtxgraph.check_edges_existence(3)
         self.assertEqual(rg, 5, "Rg(t) is not true")
 
-        num_edges = graph.num_of_edges
+        num_edges = mtxgraph.num_of_edges
         self.assertEqual(num_edges, 16, "|G| in not true")
 
-        sum_squares_degree = graph.sum_of_squares_of_degrees_of_nodes()
+        sum_squares_degree = mtxgraph.sum_of_squares_of_degrees_of_nodes()
         self.assertEqual(sum_squares_degree, 96, "Sum of squares of degree  is not true")
 
-    def test_CPD(self):
+    def test_graph_list(self):
         data_set1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
-        changepoint = GraphBased(GraphList(data_set1, custom_comparison))
-        e = changepoint.calculation_e(3)
-        self.assertEqual(e, 6.153846153846154, "E(Rg(t)) is not true")
+        builder = AdjacencyListBuilder(data_set1, custom_comparison)
+        mtxgraph = builder.build_graph()
 
-        var = changepoint.calculation_var(3)
-        self.assertEqual(var, 6.885422270037656, "Var(Rg(t)) is not true")
+        rg = mtxgraph.check_edges_existence(3)
+        self.assertEqual(rg, 5, "Rg(t) is not true")
 
-        z = changepoint.calculation_z(3)
-        self.assertEqual(z, 0.4397264774834466, "Zg(t) is not true")
+        num_edges = mtxgraph.num_of_edges
+        self.assertEqual(num_edges, 16, "|G| in not true")
+
+        sum_squares_degree = mtxgraph.sum_of_squares_of_degrees_of_nodes()
+        self.assertEqual(sum_squares_degree, 96, "Sum of squares of degree  is not true")
+
+    def test_CPD_lst(self):
+        data_set1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
+        lstbuild = AdjacencyListBuilder(data_set1, custom_comparison)
+        lstgraph = lstbuild.build_graph()
+
+        cpdmtx = GraphBased(lstgraph)
+        e = cpdmtx.calculation_e(3)
+        self.assertEqual(e, 6.153846153846154, msg="E(Rg(t)) is not true")
+
+        var = cpdmtx.calculation_var(3)
+        self.assertEqual(var, 6.885422270037656, msg="Var(Rg(t)) is not true")
+
+        z = cpdmtx.calculation_z(3)
+        self.assertEqual(z, 0.4397264774834466, msg="Zg(t) is not true")
+
         z_list = []
-        self.assertEqual(changepoint.find_changepoint(1.5, z_list), [5], "Incorrect change point")
+        self.assertEqual(cpdmtx.find_changepoint(1.5, z_list), [5], "Incorrect change point")
+
+    def test_CPD_mtx(self):
+        data_set1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
+        mtxbuild = AdjacencyMatrixBuilder(data_set1, custom_comparison)
+        mtxgraph = mtxbuild.build_graph()
+
+        cpdmtx = GraphBased(mtxgraph)
+        e = cpdmtx.calculation_e(3)
+        self.assertEqual(e, 6.153846153846154, msg="E(Rg(t)) is not true")
+
+        var = cpdmtx.calculation_var(3)
+        self.assertEqual(var, 6.885422270037656, msg="Var(Rg(t)) is not true")
+
+        z = cpdmtx.calculation_z(3)
+        self.assertEqual(z, 0.4397264774834466, msg="Zg(t) is not true")
+
+        z_list = []
+        self.assertEqual(cpdmtx.find_changepoint(1.5, z_list), [5], "Incorrect change point")

@@ -59,7 +59,11 @@ if __name__ == "__main__":
     lstbuild = AdjacencyListBuilder(data1, custom_comparison)
     lstgraph = lstbuild.build_graph()
 
+    z1 = []
+    z2 = []
+
     cpdmtx = GraphBased(mtxgraph)
     cpdlst = GraphBased(lstgraph)
-    print(cpdmtx.calculation_z(3))
-    print(cpdlst.calculation_z(3))
+
+    print(cpdmtx.find_changepoint(1.5, z1))
+    print(cpdlst.find_changepoint(1.5, z2))

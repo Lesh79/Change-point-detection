@@ -49,10 +49,10 @@ class GraphList(IGraph):
     def check_edges_existence(self, thao) -> int:
         count_edges = 0
         for node_1 in range(thao):
-            for node_2 in range(0, self.len):
+            for node_2 in range(thao, self.len):
                 if self.data[node_2] in self.lst[node_1]:
                     count_edges += 1
-        return count_edges // 2
+        return count_edges
 
     def sum_of_squares_of_degrees_of_nodes(self) -> int:
         sum_squares = 0
