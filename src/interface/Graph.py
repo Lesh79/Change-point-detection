@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-import numpy as np
-
 
 class IGraph(ABC):
     def __init__(self):

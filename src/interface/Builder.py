@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import List, Any, Callable, Dict
+from typing import List, Any, Callable
 
-import numpy as np
 
 from src.interface.Graph import IGraph
 
