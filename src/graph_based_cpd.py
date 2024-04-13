@@ -1,3 +1,4 @@
+import json
 import math
 from typing import List
 
@@ -46,24 +47,25 @@ class GraphBased(CPD):
 if __name__ == "__main__":
 
     def custom_comparison(node1, node2):
-        if abs(node1 - node2) <= 5:
-            return True
-        else:
-            return False
+        return abs(node1 - node2) <= 5
 
     z = []
-    data1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
+    with open("file.txt", "r") as fr:
+        # читаем из файла
+        data1 = json.load(fr)
+
+    # data1 = [50, 55, 60, 48, 52, 70, 75, 80, 90, 85, 95, 100, 50]
+    # data1 = [70, 75, 80, 90, 85, 95, 100, 78, 83, 94, 45, 42, 40, 38, 35, 30, 28, 25, 20, 18, 15, 12, 10, 8,
+    #          5, 7, 10, 6, 13, 8, 15, 11, 4, 21, 19]
     builder = AdjacencyMatrixBuilder(data1, custom_comparison)
     mtxgraph = builder.build_graph()
 
     lstbuild = AdjacencyListBuilder(data1, custom_comparison)
     lstgraph = lstbuild.build_graph()
 
-    z1 = []
-    z2 = []
-
     cpdmtx = GraphBased(mtxgraph)
     cpdlst = GraphBased(lstgraph)
 
-    print(cpdmtx.find_changepoint(1.5, z1))
-    print(cpdlst.find_changepoint(1.5, z2))
+    zl = []
+    print(cpdmtx.find_changepoint(87, zl))
+    # print(zl)

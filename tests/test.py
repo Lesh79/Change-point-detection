@@ -8,10 +8,7 @@ import unittest
 
 
 def custom_comparison(node1, node2):
-    if abs(node1 - node2) <= 5:
-        return True
-    else:
-        return False
+    return abs(node1 - node2) <= 5
 
 
 class TestGraphCPD(unittest.TestCase):

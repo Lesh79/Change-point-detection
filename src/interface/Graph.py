@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 class IGraph(ABC):
     def __init__(self):
         self.num_of_edges = None
+        self.len = None
 
     @abstractmethod
     def check_edges_existence(self, thao: int) -> int:
